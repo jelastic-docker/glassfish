@@ -13,8 +13,11 @@ COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
 
+COPY run.sh /run.sh
+RUN chmod 755 /run.sh
+
 # Ports being exposed
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["asadmin", "start-domain", "-v"]
+CMD ["./run.sh"]
