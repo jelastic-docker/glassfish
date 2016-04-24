@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM java:8-jdk
 MAINTAINER "Andre Tadeu de Carvalho <andre.tadeu.de.carvalho@gmail.com>"
 
 ENV GLASSFISH_PKG=glassfish-4.1.1.zip \
