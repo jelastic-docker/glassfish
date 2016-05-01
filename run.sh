@@ -37,6 +37,10 @@ then
 --nodehost $(cat /etc/hosts | grep "${HOSTNAME}" | cut -f1 -s) \
 --installdir /glassfish4 "${HOSTNAME}"
 
+  # Start instance
+  ssh root@das /glassfish4/glassfish/lib/nadmin --user=admin \
+--passwordfile=/tmp/glassfishpwd --interactive=false start-instance cluster1-"${HOSTNAME}"
+
   while [[ true ]]; do
     sleep 1
   done
