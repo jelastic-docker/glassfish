@@ -2,6 +2,11 @@
 
 service ssh start
 asadmin start-domain
+if ! [ -e /tmp/glassfishpwd ]
+then
+  echo "AS_ADMIN_PASSWORD=glassfish" > /tmp/glassfishpwd
+fi
+
 # Create Cluster
 if [ -n "${DAS}" ]
 then
