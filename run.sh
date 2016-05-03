@@ -19,8 +19,18 @@ then
   # Stop domain
   asadmin --user=admin stop-domain
 
+  # Getting all keys from Domain Administration Server SSH
   ssh-keyscan -H das >> /root/.ssh/known_hosts
 
+  # Busy waiting for SSH to be enabled
+  SSH_STATUS=$(ssh root@das echo "I am waiting.")
+  while [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" ]
+  do
+    sleep 20
+    SSH_STATUS=$(ssh root@das echo "I am waiting.")
+  done
+
+  # Busy waiting for Domain Administration Server to be available
   DAS_STATUS=$(ssh root@das /glassfish4/glassfish/bin/asadmin --user=admin \
 --passwordfile=/opt/glassfishpwd list-domains | head -n 1)
 
@@ -31,12 +41,18 @@ then
   --passwordfile=/opt/glassfishpwd list-domains | head -n 1)
   done
 
+  # Get node own LAN IP
+  NODEHOST_ENTRY=$(cat /etc/hosts | grep "${HOSTNAME}")
+  export HOST_IP=$(echo "${NODEHOST_ENTRY}" | cut -f1 -s)
+  if [ -z "${HOST_IP}" ]
+    then export HOST_IP=$(echo "${NODEHOST_ENTRY}" | cut -d' ' -f1)
+  fi
+
   # Update existing CONFIG node to a SSH one
   ssh root@das /glassfish4/glassfish/bin/asadmin --user=admin \
 --passwordfile=/opt/glassfishpwd --interactive=false update-node-ssh \
 --sshuser root --sshkeyfile /root/.ssh/id_rsa \
---nodehost $(cat /etc/hosts | grep "${HOSTNAME}" | cut -f1 -s) \
---installdir /glassfish4 "${HOSTNAME}"
+--nodehost "${HOST_IP}" --installdir /glassfish4 "${HOSTNAME}"
 
   # Start instance
   ssh root@das /glassfish4/glassfish/lib/nadmin --user=admin \
