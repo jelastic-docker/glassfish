@@ -12,16 +12,16 @@ echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
 unzip -o $GLASSFISH_PKG
 rm -f $GLASSFISH_PKG
 apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
-echo "AS_ADMIN_PASSWORD=" > /tmp/glassfishpwd
+echo "AS_ADMIN_PASSWORD=" > /opt/glassfishpwd
 
 # Change Glassfish default user password
-echo "AS_ADMIN_NEWPASSWORD=${PASSWORD}" >> /tmp/glassfishpwd
-asadmin --user=admin --passwordfile=/tmp/glassfishpwd change-admin-password --domain_name domain1
+echo "AS_ADMIN_NEWPASSWORD=${PASSWORD}" >> /opt/glassfishpwd
+asadmin --user=admin --passwordfile=/opt/glassfishpwd change-admin-password --domain_name domain1
 
 # Enable secure admin
 asadmin start-domain
-echo "AS_ADMIN_PASSWORD=${PASSWORD}" > /tmp/glassfishpwd
-asadmin --user=admin --passwordfile=/tmp/glassfishpwd enable-secure-admin
+echo "AS_ADMIN_PASSWORD=${PASSWORD}" > /opt/glassfishpwd
+asadmin --user=admin --passwordfile=/opt/glassfishpwd enable-secure-admin
 
 asadmin --user=admin stop-domain
 
