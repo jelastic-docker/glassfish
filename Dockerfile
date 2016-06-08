@@ -15,6 +15,7 @@ RUN tmp/install.sh
 
 COPY install/keys/* /root/.ssh/
 COPY install/keys/id_rsa.pub /root/.ssh/authorized_keys
+RUN chmod 0600 /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa.pub
 
 COPY run.sh /run.sh
 RUN chmod 755 /run.sh
@@ -23,4 +24,4 @@ RUN chmod 755 /run.sh
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["./run.sh"]
+CMD ["./run.sh", "gf:start"]
