@@ -2,7 +2,7 @@
 
 Glassfish Docker image based on https://github.com/oracle/docker-images/tree/master/GlassFish/4.1.1
 
-## How to user
+## How to use
 
 First, you have to create a Domain Administration Server, or DAS for short.
 
