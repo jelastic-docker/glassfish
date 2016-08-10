@@ -1,6 +1,6 @@
-# Glassfish
+# GlassFish
 
-Glassfish Docker image based on https://github.com/oracle/docker-images/tree/master/GlassFish/4.1.1
+GlassFish Docker image based on https://github.com/oracle/docker-images/tree/master/GlassFish/4.1.1
 
 ## How to use
 
