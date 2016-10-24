@@ -13,9 +13,7 @@ COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
 
-COPY install/keys/* /root/.ssh/
-COPY install/keys/id_rsa.pub /root/.ssh/authorized_keys
-RUN chmod 0600 /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa.pub
+RUN ssh-keygen  -t rsa -b 4096 -q -N '' -f /root/.ssh/id_rsa
 
 COPY run.sh /run.sh
 RUN chmod 755 /run.sh
