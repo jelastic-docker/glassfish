@@ -2,23 +2,23 @@
 
 start() {
     service ssh start
-    asadmin start-domain
+    /glassfish4/bin/asadmin start-domain
 
     # Create Cluster
     if [ -n "${DAS}" ]
     then
-        asadmin --user=admin --passwordfile=/opt/glassfishpwd --interactive=false create-cluster cluster1
-        asadmin --user=admin stop-domain
-        asadmin start-domain -v
+        /glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd --interactive=false create-cluster cluster1
+        /glassfish4/bin/asadmin --user=admin stop-domain
+        /glassfish4/bin/asadmin start-domain -v
     fi
     if [ -n "${DAS_PORT_4848_TCP_ADDR}" ]
     then
         # Create cluster node
-        asadmin --user=admin --passwordfile=/opt/glassfishpwd --interactive=false \
+        /glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd --interactive=false \
         --host das --port 4848 create-local-instance --cluster cluster1 cluster1-"${HOSTNAME}"
 
         # Stop domain
-        asadmin --user=admin stop-domain
+        /glassfish4/bin/asadmin --user=admin stop-domain
 
         # Getting all keys from Domain Administration Server SSH
         ssh-keyscan -H das >> /root/.ssh/known_hosts

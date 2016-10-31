@@ -16,17 +16,17 @@ echo "AS_ADMIN_PASSWORD=" > /opt/glassfishpwd
 
 # Change Glassfish default user password
 echo "AS_ADMIN_NEWPASSWORD=${PASSWORD}" >> /opt/glassfishpwd
-asadmin --user=admin --passwordfile=/opt/glassfishpwd change-admin-password --domain_name domain1
+/glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd change-admin-password --domain_name domain1
 
 # Enable secure admin
-asadmin start-domain
+/glassfish4/bin/asadmin start-domain
 echo "AS_ADMIN_PASSWORD=${PASSWORD}" > /opt/glassfishpwd
-asadmin --user=admin --passwordfile=/opt/glassfishpwd enable-secure-admin
+/glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd enable-secure-admin
 
-asadmin --user=admin stop-domain
+/glassfish4/bin/asadmin --user=admin stop-domain
 
 # Configure SSH
-echo 'root:glassfish' | chpasswd
+echo "root:${PASSWORD}" | chpasswd
 sed -i 's|#PubkeyAuthentication yes|PubkeyAuthentication yes|g' /etc/ssh/sshd_config
 sed -i 's|#StrictModes yes|StrictModes yes|g' /etc/ssh/sshd_config
 sed -i 's|#AuthorizedKeysFile	%h/.ssh/authorized_keys|AuthorizedKeysFile	%h/.ssh/authorized_keys|g' /etc/ssh/sshd_config
