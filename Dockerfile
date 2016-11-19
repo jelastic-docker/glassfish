@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER "Andre Tadeu de Carvalho <andre.tadeu.de.carvalho@gmail.com>"
+MAINTAINER "info@jelastic.com"
 
 ARG GLASSFISH_VERSION=4.1.1
 ARG GLASSFISH_PKG=glassfish-${GLASSFISH_VERSION}.zip
