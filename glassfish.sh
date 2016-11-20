@@ -10,14 +10,14 @@ start() {
     	ssh-keygen  -t rsa -b 4096 -q -N '' -f ~/.ssh/id_rsa
     	cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
 
-        ~/glassfish4/bin/asadmin --user=admin --passwordfile=~/glassfishpwd --interactive=false create-cluster cluster1
+        ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false create-cluster cluster1
         ~/glassfish4/bin/asadmin --user=admin stop-domain
         ~/glassfish4/bin/asadmin start-domain -v
     fi
     if [ -n "${DAS_PORT_4848_TCP_ADDR}" ]
     then
         # Create cluster node
-        ~/glassfish4/bin/asadmin --user=admin --passwordfile=~/glassfishpwd --interactive=false \
+        ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false \
         --host das --port 4848 create-local-instance --cluster cluster1 cluster1-"${HOSTNAME}"
 
         # Stop domain
@@ -38,13 +38,13 @@ start() {
 
         # Busy waiting for Domain Administration Server to be available
         DAS_STATUS=$(ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
-        --passwordfile=~/glassfishpwd list-domains | head -n 1)
+        --passwordfile=${PSWD_FILE} list-domains | head -n 1)
 
         while [ "${DAS_STATUS}" = "domain1 not running" ]
         do
             sleep 20
             DAS_STATUS=$(ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
-            --passwordfile=~/glassfishpwd list-domains | head -n 1)
+            --passwordfile=${PSWD_FILE} list-domains | head -n 1)
         done
 
         # Get node own LAN IP
@@ -56,13 +56,13 @@ start() {
 
         # Update existing CONFIG node to a SSH one
         ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
-        --passwordfile=~/glassfishpwd --interactive=false update-node-ssh \
+        --passwordfile=${PSWD_FILE} --interactive=false update-node-ssh \
         --sshuser "${USER}" --sshkeyfile ~/.ssh/id_rsa \
         --nodehost "${HOST_IP}" --installdir /glassfish4 "${HOSTNAME}"
 
         # Start instance
         ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
-        --passwordfile=~/glassfishpwd --interactive=false start-instance cluster1-"${HOSTNAME}"
+        --passwordfile=${PSWD_FILE} --interactive=false start-instance cluster1-"${HOSTNAME}"
 
         while [[ true ]]; do
             sleep 1
@@ -73,15 +73,15 @@ start() {
 stop() {
     
     ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
-    --passwordfile=~/glassfishpwd --interactive=false stop-instance cluster1-"${HOSTNAME}"
+    --passwordfile=${PSWD_FILE} --interactive=false stop-instance cluster1-"${HOSTNAME}"
 
     ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
-    --passwordfile=~/glassfishpwd --interactive=false delete-instance cluster1-"${HOSTNAME}"
+    --passwordfile=${PSWD_FILE} --interactive=false delete-instance cluster1-"${HOSTNAME}"
 
     ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
-    --passwordfile=~/glassfishpwd --interactive=false delete-node-ssh "${HOSTNAME}"
+    --passwordfile=${PSWD_FILE} --interactive=false delete-node-ssh "${HOSTNAME}"
 
-    ~/glassfish4/glassfish/lib/nadmin --user=admin --passwordfile=~/glassfishpwd \
+    ~/glassfish4/glassfish/lib/nadmin --user=admin --passwordfile=${PSWD_FILE} \
     --interactive=false delete-local-instance --node "${HOSTNAME}" cluster1-"${HOSTNAME}"
 }
 
