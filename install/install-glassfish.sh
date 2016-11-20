@@ -1,7 +1,8 @@
 # Install Glassfish Application Server
 wget --quiet --no-check-certificate $GLASSFISH_URL -O ~/$GLASSFISH_PKG
-#echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
+echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
 unzip -o ~/$GLASSFISH_PKG
+RUN rm -f ~/$GLASSFISH_PKG
 
 PSWD_FILE="/home/"${USER}"/glassfishpwd"
 
