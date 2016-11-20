@@ -9,32 +9,32 @@ ARG PASSWORD=glassfish
 ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 ENV USER glassfish
-ENV PSWD_FILE /home/$USER/glassfishpwd
+ENV HOME_DIR /home/$USER
+ENV PSWD_FILE $HOME_DIR/glassfishpwd
 
-RUN useradd -m -d /home/"${USER}" "${USER}"
-RUN chsh -s /bin/bash "${USER}"
+RUN useradd -m -d "${HOME_DIR}" -s /bin/bash "${USER}"
 
 COPY install/install.sh /install.sh
 RUN chmod 755 /install.sh
 RUN /install.sh
 
-COPY install/install-glassfish.sh /install-glassfish.sh
-RUN chmod 755 /install-glassfish.sh
-
-COPY glassfish.sh /glassfish.sh
-RUN chmod 755 /glassfish.sh
-
-COPY run.sh /run.sh
-RUN chmod 755 /run.sh
+#COPY run.sh /run.sh
+#RUN chmod 755 /run.sh
 
 USER $USER 
-WORKDIR /home/$USER
-RUN /install-glassfish.sh
+WORKDIR $HOME_DIR
 
+COPY install/install-glassfish.sh $HOME_DIR/install-glassfish.sh
+RUN chmod 755 $HOME_DIR/install-glassfish.sh
+RUN $HOME_DIR/install-glassfish.sh
+
+COPY glassfish.sh $HOME_DIR/glassfish.sh
+RUN chmod 755 $HOME_DIR/glassfish.sh
+
+RUN mkdir $HOME_DIR/.ssh  
 
 #USER root
 #RUN apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
-
 
 # Ports being exposed
 EXPOSE 22 3700 4848 7676 8080 8181 8686
