@@ -24,7 +24,7 @@ start() {
         /glassfish4/bin/asadmin --user=admin stop-domain
 
         # Getting all keys from Domain Administration Server SSH
-        ssh-keyscan -H das >> /"${USER}"/.ssh/known_hosts
+        ssh-keyscan -H das >> /home/"${USER}"/.ssh/known_hosts
 
         # Busy waiting for SSH to be enabled
         SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
@@ -57,7 +57,7 @@ start() {
         # Update existing CONFIG node to a SSH one
         ssh ${USER}@das /glassfish4/glassfish/bin/asadmin --user=admin \
         --passwordfile=/opt/glassfishpwd --interactive=false update-node-ssh \
-        --sshuser "${USER}" --sshkeyfile /"${USER}"/.ssh/id_rsa \
+        --sshuser "${USER}" --sshkeyfile /home/"${USER}"/.ssh/id_rsa \
         --nodehost "${HOST_IP}" --installdir /glassfish4 "${HOSTNAME}"
 
         # Start instance
