@@ -7,5 +7,5 @@ stages:
 build_image:
   stage: build
   script:
-    - docker build --no-cache=true -t "node77790-priv-reg.demo.jelastic.com:11007/glassfish:$TAG" .
+    - docker build -t "node77790-priv-reg.demo.jelastic.com:11007/glassfish:$TAG" .
     - docker push "node77790-priv-reg.demo.jelastic.com:11007/glassfish:$TAG"
