@@ -4,8 +4,6 @@ echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
 unzip -o ~/$GLASSFISH_PKG
 rm -f ~/$GLASSFISH_PKG
 
-PSWD_FILE="/home/"${USER}"/glassfishpwd"
-
 echo "AS_ADMIN_PASSWORD=" > ${PSWD_FILE}
 
 # Change Glassfish default user password
