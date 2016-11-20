@@ -17,10 +17,10 @@ COPY install/install.sh /install.sh
 RUN chmod 755 /install.sh
 RUN /install.sh
 
-COPY install/install.sh /install-glassfish.sh
+COPY install/install-glassfish.sh /install-glassfish.sh
 RUN chmod 755 /install-glassfish.sh
 USER $USER 
-#RUN /install-glassfish.sh
+RUN /install-glassfish.sh
 USER root
 
 RUN rm -f $GLASSFISH_PKG
