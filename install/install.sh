@@ -6,25 +6,6 @@ echo 'deb http://httpredir.debian.org/debian jessie-backports main' > \
 apt-get -qq update
 apt-get install -yqq wget unzip openjdk-8-jdk openssh-server
 
-# Install Glassfish Application Server
-wget --quiet --no-check-certificate $GLASSFISH_URL
-echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
-unzip -o $GLASSFISH_PKG
-rm -f $GLASSFISH_PKG
-apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
-echo "AS_ADMIN_PASSWORD=" > /opt/glassfishpwd
-
-# Change Glassfish default user password
-echo "AS_ADMIN_NEWPASSWORD=${PASSWORD}" >> /opt/glassfishpwd
-/glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd change-admin-password --domain_name domain1
-
-# Enable secure admin
-/glassfish4/bin/asadmin start-domain
-echo "AS_ADMIN_PASSWORD=${PASSWORD}" > /opt/glassfishpwd
-/glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd enable-secure-admin
-
-/glassfish4/bin/asadmin --user=admin stop-domain
-
 # Configure SSH
 echo "root:${PASSWORD}" | chpasswd
 sed -i 's|#PubkeyAuthentication yes|PubkeyAuthentication yes|g' /etc/ssh/sshd_config
