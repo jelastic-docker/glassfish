@@ -1,10 +1,8 @@
-
 # Install Glassfish Application Server
 wget --quiet --no-check-certificate $GLASSFISH_URL
 echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
 unzip -o $GLASSFISH_PKG
 rm -f $GLASSFISH_PKG
-apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
 
 echo "AS_ADMIN_PASSWORD=" > ~/glassfishpwd
 
