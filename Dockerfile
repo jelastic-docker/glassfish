@@ -25,6 +25,7 @@ USER $USER
 RUN tmp/install-glassfish.sh
 USER root
 
+RUN rm -f $GLASSFISH_PKG
 RUN apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
 
 COPY glassfish.sh /glassfish.sh
