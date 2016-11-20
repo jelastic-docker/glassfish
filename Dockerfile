@@ -30,9 +30,6 @@ COPY glassfish.sh $HOME_DIR/glassfish.sh
 
 RUN mkdir $HOME_DIR/.ssh  
 
-#USER root
-#RUN apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
-
 # Ports being exposed
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
