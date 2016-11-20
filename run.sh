@@ -10,6 +10,9 @@ start() {
     # Create Cluster
     if [ -n "${DAS}" ]
     then
+    	ssh-keygen  -t rsa -b 4096 -q -N '' -f /home/"${USER}"/.ssh/id_rsa
+		cp /home/"${USER}"/.ssh/id_rsa.pub /home/"${USER}"/.ssh/authorized_keys
+
         /glassfish4/bin/asadmin --user=admin --passwordfile=/opt/glassfishpwd --interactive=false create-cluster cluster1
         /glassfish4/bin/asadmin --user=admin stop-domain
         /glassfish4/bin/asadmin start-domain -v
