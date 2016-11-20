@@ -37,4 +37,4 @@ RUN mkdir $HOME_DIR/.ssh
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["bash glassfish.sh", "gf:start"]
+CMD ["bash glassfish.sh", "start"]
