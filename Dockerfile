@@ -10,9 +10,7 @@ ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 ENV USER glassfish
 
-RUN useradd "${USER}"
-RUN mkdir /home/"${USER}"
-RUN chown "${USER}":users /home/"${USER}"
+RUN useradd -m -d /home/"${USER}" "${USER}"
 RUN chsh -s /bin/bash "${USER}"
 
 COPY install/install.sh /tmp/install.sh
@@ -22,7 +20,7 @@ RUN tmp/install.sh
 COPY install/install.sh /tmp/install-glassfish.sh
 RUN chmod 755 /tmp/install-glassfish.sh
 USER $USER 
-RUN tmp/install-glassfish.sh
+#RUN tmp/install-glassfish.sh
 USER root
 
 RUN rm -f $GLASSFISH_PKG
@@ -38,4 +36,4 @@ RUN chmod 755 /run.sh
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["./run.sh", "gf:start"]
+#CMD ["./run.sh", "gf:start"]
