@@ -1,9 +1,6 @@
 #!/bin/bash
 
 start() {
-    service ssh start
-    
-    su - "${USER}"
     
     /glassfish4/bin/asadmin start-domain
 
@@ -74,7 +71,6 @@ start() {
 }
 
 stop() {
-    su - "${USER}"    
     
     ssh ${USER}@das /glassfish4/glassfish/lib/nadmin --user=admin \
     --passwordfile=/opt/glassfishpwd --interactive=false stop-instance cluster1-"${HOSTNAME}"
