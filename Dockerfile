@@ -19,6 +19,9 @@ COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
 
+COPY glassfish.sh /glassfish.sh
+RUN chmod 755 /glassfish.sh
+
 COPY run.sh /run.sh
 RUN chmod 755 /run.sh
 
