@@ -3,15 +3,17 @@ wget --quiet --no-check-certificate $GLASSFISH_URL -O ~/$GLASSFISH_PKG
 #echo "$MD5 *$GLASSFISH_PKG" | md5sum -c -
 unzip -o ~/$GLASSFISH_PKG
 
-echo "AS_ADMIN_PASSWORD=" > ~/glassfishpwd
+PSWD_FILE="/home/"${USER}"/glassfishpwd"
+
+echo "AS_ADMIN_PASSWORD=" > ${PSWD_FILE}
 
 # Change Glassfish default user password
-echo "AS_ADMIN_NEWPASSWORD=${PASSWORD}" >> ~/glassfishpwd
-~/glassfish4/bin/asadmin --user=admin --passwordfile=~/glassfishpwd change-admin-password --domain_name domain1
+echo "AS_ADMIN_NEWPASSWORD=${PASSWORD}" >> ${PSWD_FILE}
+~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} change-admin-password --domain_name domain1
 
 # Enable secure admin
 ~/glassfish4/bin/asadmin start-domain
-echo "AS_ADMIN_PASSWORD=${PASSWORD}" > ~/glassfishpwd
-~/glassfish4/bin/asadmin --user=admin --passwordfile=~/glassfishpwd enable-secure-admin
+echo "AS_ADMIN_PASSWORD=${PASSWORD}" > ${PSWD_FILE}
+~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} enable-secure-admin
 
 ~/glassfish4/bin/asadmin --user=admin stop-domain
