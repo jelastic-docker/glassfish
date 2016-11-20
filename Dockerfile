@@ -19,12 +19,6 @@ RUN /install.sh
 
 COPY install/install-glassfish.sh /install-glassfish.sh
 RUN chmod 755 /install-glassfish.sh
-USER $USER 
-WORKDIR /home/$USER
-RUN /install-glassfish.sh
-USER root
-
-#RUN apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
 
 COPY glassfish.sh /glassfish.sh
 RUN chmod 755 /glassfish.sh
@@ -32,8 +26,17 @@ RUN chmod 755 /glassfish.sh
 COPY run.sh /run.sh
 RUN chmod 755 /run.sh
 
+USER $USER 
+WORKDIR /home/$USER
+RUN /install-glassfish.sh
+
+
+#USER root
+#RUN apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
+
+
 # Ports being exposed
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["./run.sh", "gf:start"]
+CMD ["/glassfish.sh", "gf:start"]
