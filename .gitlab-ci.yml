@@ -1,17 +1,9 @@
-image: docker:latest
-
 variables:
     TAG: "$CI_BUILD_REF_NAME"
-    
-services:
-    - docker:dind
-
-before_script:
-    - docker info
-
-build:
+stages:
+    - build
+build_image:
   stage: build
   script:
     - docker build -t "node77790-priv-reg.demo.jelastic.com:11007/glassfish:$TAG" .
     - docker push "node77790-priv-reg.demo.jelastic.com:11007/glassfish:$TAG"
-
