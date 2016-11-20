@@ -19,12 +19,13 @@ COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
 
-
 COPY install/install.sh /tmp/install-glassfish.sh
 RUN chmod 755 /tmp/install-glassfish.sh
 USER $USER 
 RUN tmp/install-glassfish.sh
 USER root
+
+RUN apt-get purge -yqq wget unzip && rm -rf /var/cache/apt/*
 
 COPY glassfish.sh /glassfish.sh
 RUN chmod 755 /glassfish.sh
