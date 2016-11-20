@@ -1,5 +1,5 @@
 variables:
-    TAG: "4.1.1-dev"
+    TAG: "$CI_BUILD_REF_NAME"
 
 
 stages:
