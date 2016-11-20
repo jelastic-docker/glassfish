@@ -20,6 +20,7 @@ RUN /install.sh
 COPY install/install-glassfish.sh /install-glassfish.sh
 RUN chmod 755 /install-glassfish.sh
 USER $USER 
+WORKDIR /home/$USER
 RUN pwd
 RUN ls -l /home
 RUN ls -l ~/
