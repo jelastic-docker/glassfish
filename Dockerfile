@@ -15,8 +15,7 @@ ENV PSWD_FILE $HOME_DIR/glassfishpwd
 RUN useradd -m -d "${HOME_DIR}" -s /bin/bash "${USER}"
 
 COPY install/install.sh /install.sh
-RUN chmod 755 /install.sh
-RUN /install.sh
+RUN bash /install.sh
 
 #COPY run.sh /run.sh
 #RUN chmod 755 /run.sh
@@ -25,11 +24,9 @@ USER $USER
 WORKDIR $HOME_DIR
 
 COPY install/install-glassfish.sh $HOME_DIR/install-glassfish.sh
-RUN chmod 755 $HOME_DIR/install-glassfish.sh
-RUN $HOME_DIR/install-glassfish.sh
+RUN bash $HOME_DIR/install-glassfish.sh
 
 COPY glassfish.sh $HOME_DIR/glassfish.sh
-RUN chmod 755 $HOME_DIR/glassfish.sh
 
 RUN mkdir $HOME_DIR/.ssh  
 
@@ -40,4 +37,4 @@ RUN mkdir $HOME_DIR/.ssh
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["/glassfish.sh", "gf:start"]
+CMD ["bash glassfish.sh", "gf:start"]
