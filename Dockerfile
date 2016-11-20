@@ -13,14 +13,14 @@ ENV USER glassfish
 RUN useradd -m -d /home/"${USER}" "${USER}"
 RUN chsh -s /bin/bash "${USER}"
 
-COPY install/install.sh /tmp/install.sh
-RUN chmod 755 /tmp/install.sh
-RUN tmp/install.sh
+COPY install/install.sh /install.sh
+RUN chmod 755 /install.sh
+RUN /install.sh
 
-COPY install/install.sh /tmp/install-glassfish.sh
-RUN chmod 755 /tmp/install-glassfish.sh
+COPY install/install.sh /install-glassfish.sh
+RUN chmod 755 /install-glassfish.sh
 USER $USER 
-#RUN tmp/install-glassfish.sh
+#RUN /install-glassfish.sh
 USER root
 
 RUN rm -f $GLASSFISH_PKG
