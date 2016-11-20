@@ -29,7 +29,7 @@ start() {
         # Busy waiting for SSH to be enabled
         SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
         echo $SSH_STATUS >> /var/log/run.log
-        while [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" || "${SSH_STATUS}" = "Host key verification failed."]
+        while [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" || "${SSH_STATUS}" = "Host key verification failed." ]
         do
             sleep 20
             SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
