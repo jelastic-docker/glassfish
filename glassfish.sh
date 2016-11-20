@@ -58,7 +58,7 @@ start() {
         ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
         --passwordfile=${PSWD_FILE} --interactive=false update-node-ssh \
         --sshuser "${USER}" --sshkeyfile ~/.ssh/id_rsa \
-        --nodehost "${HOST_IP}" --installdir /glassfish4 "${HOSTNAME}"
+        --nodehost "${HOST_IP}" --installdir "${HOME_DIR}"/glassfish4 "${HOSTNAME}"
 
         # Start instance
         ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
