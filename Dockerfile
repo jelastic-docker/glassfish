@@ -13,6 +13,7 @@ ENV USER glassfish
 RUN useradd "${USER}"
 RUN mkdir /home/"${USER}"
 RUN chown "${USER}":users /home/"${USER}"
+RUN chsh -s /bin/bash "${USER}"
 
 COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
