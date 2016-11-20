@@ -10,6 +10,7 @@ ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 ENV USER glassfish
 
+RUN useradd "${USER}"
 RUN mkdir /home/"${USER}"
 RUN chown "${USER}":users /home/"${USER}"
 
