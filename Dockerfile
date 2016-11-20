@@ -14,8 +14,8 @@ ENV PSWD_FILE $HOME_DIR/glassfishpwd
 
 RUN useradd -m -d "${HOME_DIR}" -s /bin/bash "${USER}"
 
-COPY install/install.sh /install.sh
-RUN bash /install.sh
+COPY install/install-root.sh /install-root.sh
+RUN bash /install-root.sh
 
 #COPY run.sh /run.sh
 #RUN chmod 755 /run.sh
