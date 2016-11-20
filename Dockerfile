@@ -9,6 +9,7 @@ ARG PASSWORD=glassfish
 ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 ENV USER glassfish
+ENV PSWD_FILE /home/$USER/glassfishpwd
 
 RUN useradd -m -d /home/"${USER}" "${USER}"
 RUN chsh -s /bin/bash "${USER}"
