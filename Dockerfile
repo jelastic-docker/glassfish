@@ -8,6 +8,8 @@ ARG MD5=4e7ce65489347960e9797d2161e0ada2
 ARG PASSWORD=glassfish
 ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
+ENV USER glassfish
+
 COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
