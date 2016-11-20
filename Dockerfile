@@ -10,6 +10,9 @@ ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 ENV USER glassfish
 
+RUN mkdir /home/$USER
+RUN chown $USER:users /home/$USER
+
 COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
