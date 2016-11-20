@@ -19,12 +19,11 @@ COPY install/install.sh /tmp/install.sh
 RUN chmod 755 /tmp/install.sh
 RUN tmp/install.sh
 
-USER $USER 
 
 COPY install/install.sh /tmp/install-glassfish.sh
 RUN chmod 755 /tmp/install-glassfish.sh
+USER $USER 
 RUN tmp/install-glassfish.sh
-
 USER root
 
 COPY glassfish.sh /glassfish.sh
