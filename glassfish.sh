@@ -86,10 +86,10 @@ stop() {
 }
 
 case ${1} in
-    gf:start)
+    start)
         start
         ;;
-    gf:stop)
+    stop)
         stop
         ;;
 esac
