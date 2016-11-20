@@ -21,9 +21,6 @@ COPY install/install-glassfish.sh /install-glassfish.sh
 RUN chmod 755 /install-glassfish.sh
 USER $USER 
 WORKDIR /home/$USER
-RUN pwd
-RUN ls -l /home
-RUN ls -l ~/
 RUN /install-glassfish.sh
 USER root
 
@@ -39,4 +36,4 @@ RUN chmod 755 /run.sh
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-#CMD ["./run.sh", "gf:start"]
+CMD ["./run.sh", "gf:start"]
