@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER "Andre Tadeu de Carvalho <andre.tadeu.de.carvalho@gmail.com>"
+MAINTAINER "info@jelastic.com"
 
 ARG GLASSFISH_VERSION=4.1.1
 ARG GLASSFISH_PKG=glassfish-${GLASSFISH_VERSION}.zip
@@ -8,18 +8,30 @@ ARG MD5=4e7ce65489347960e9797d2161e0ada2
 ARG PASSWORD=glassfish
 ARG JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-COPY install/install.sh /tmp/install.sh
-RUN chmod 755 /tmp/install.sh
-RUN tmp/install.sh
+ENV USER glassfish
+ENV HOME_DIR /home/$USER
+ENV PSWD_FILE $HOME_DIR/glassfishpwd
 
-RUN ssh-keygen  -t rsa -b 4096 -q -N '' -f /root/.ssh/id_rsa
-RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+RUN useradd -m -d "${HOME_DIR}" -s /bin/bash "${USER}"
 
-COPY run.sh /run.sh
-RUN chmod 755 /run.sh
+COPY install/install-root.sh /install-root.sh
+RUN bash /install-root.sh
+
+#COPY run.sh /run.sh
+#RUN chmod 755 /run.sh
+
+USER $USER 
+WORKDIR $HOME_DIR
+
+COPY install/install-glassfish.sh $HOME_DIR/install-glassfish.sh
+RUN bash $HOME_DIR/install-glassfish.sh
+
+COPY glassfish.sh $HOME_DIR/glassfish.sh
+
+RUN mkdir $HOME_DIR/.ssh  
 
 # Ports being exposed
 EXPOSE 22 3700 4848 7676 8080 8181 8686
 
 # Start asadmin console and the domain
-CMD ["./run.sh", "gf:start"]
+CMD ["bash glassfish.sh", "start"]
