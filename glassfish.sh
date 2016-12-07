@@ -7,7 +7,7 @@ start() {
     # Create Cluster
     if [ -n "${DAS}" ]
     then
-    	ssh-keygen  -t rsa -b 4096 -q -N '' -f ~/.ssh/id_rsa
+    	echo -e 'y\n'|ssh-keygen -t rsa -b 4096 -q -N '' -f ~/.ssh/id_rsa
     	cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
 
         ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false create-cluster cluster1
