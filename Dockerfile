@@ -17,6 +17,12 @@ RUN useradd -m -d "${HOME_DIR}" -s /bin/bash "${USER}"
 COPY install/install-root.sh /install-root.sh
 RUN bash /install-root.sh
 
+COPY install/iptables-load /etc/network/if-pre-up.d/iptables-load
+RUN chmod +x /etc/network/if-pre-up.d/iptables-load
+
+COPY install/iptables-load /etc/network/if-post-down.d/iptables-save
+RUN chmod +x /etc/network/if-post-down.d/iptables-save
+
 #COPY run.sh /run.sh
 #RUN chmod 755 /run.sh
 
