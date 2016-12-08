@@ -1,3 +1,3 @@
 #!/bin/sh
 
-iptables-restore < /etc/iptables.rules
+[ -f '/etc/iptables.rules' ] && iptables-restore < /etc/iptables.rules || exit 0;
