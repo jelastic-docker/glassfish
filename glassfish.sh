@@ -30,7 +30,7 @@ start() {
         do
             SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
             echo $SSH_STATUS >> /var/log/run.log
-            [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" ] && { sleep 20; } || { break; }
+            [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" ] && { sleep 10; } || { break; }
         done
 
         # Busy waiting for Domain Administration Server to be available
@@ -39,7 +39,7 @@ start() {
             DAS_STATUS=$(ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
             --passwordfile=${PSWD_FILE} list-domains | head -n 1)
             echo $DAS_STATUS >> /var/log/run.log
-            [ "${DAS_STATUS}" = "domain1 not running" ] && { sleep 20; } || { break; }
+            [ "${DAS_STATUS}" = "domain1 not running" ] && { sleep 10; } || { break; }
         done
                 
         #start domain
