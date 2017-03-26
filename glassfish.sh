@@ -70,14 +70,16 @@ stop() {
     ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
     --passwordfile=${PSWD_FILE} --interactive=false stop-instance cluster1-"${HOSTNAME}"
 
+    sleep 10
+    
     ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
     --passwordfile=${PSWD_FILE} --interactive=false delete-instance cluster1-"${HOSTNAME}"
 
     ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
     --passwordfile=${PSWD_FILE} --interactive=false delete-node-ssh "${HOSTNAME}"
 
-    ~/glassfish4/glassfish/lib/nadmin --user=admin --passwordfile=${PSWD_FILE} \
-    --interactive=false delete-local-instance --node "${HOSTNAME}" cluster1-"${HOSTNAME}"
+    #~/glassfish4/glassfish/lib/nadmin --user=admin --passwordfile=${PSWD_FILE} \
+    #--interactive=false delete-local-instance --node "${HOSTNAME}" cluster1-"${HOSTNAME}"
 }
 
 case ${1} in
