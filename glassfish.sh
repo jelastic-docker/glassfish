@@ -16,57 +16,43 @@ start() {
     fi
     if [ -n "${DAS_PORT_4848_TCP_ADDR}" ]
     then
+        # Getting all keys from Domain Administration Server SSH
+        ssh-keyscan -H das >> ~/.ssh/known_hosts
+
+        # Busy waiting for SSH to be enabled
+        while [[ true ]]
+        do
+            SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
+            echo $SSH_STATUS >> /var/log/run.log
+            [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" ] && { sleep 20; } || { break; }
+        done
+
+        # Busy waiting for Domain Administration Server to be available
+        while [[ true ]]
+        do
+            DAS_STATUS=$(ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
+            --passwordfile=${PSWD_FILE} list-domains | head -n 1)
+            echo $DAS_STATUS >> /var/log/run.log
+            [ "${DAS_STATUS}" = "domain1 not running" ] && { sleep 20; } || { break; }
+        done
+        
         # Create cluster node
         ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false \
         --host das --port 4848 create-local-instance --cluster cluster1 cluster1-"${HOSTNAME}"
 
         # Stop domain
-        ~/glassfish4/bin/asadmin --user=admin stop-domain
-
-        # Getting all keys from Domain Administration Server SSH
-        ssh-keyscan -H das >> ~/.ssh/known_hosts
-
-        # Busy waiting for SSH to be enabled
-        SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
-        echo $SSH_STATUS >> /var/log/run.log
-        while [ "${SSH_STATUS}" = "ssh: connect to host das port 22: Connection refused" ]
-        do
-            sleep 20
-            SSH_STATUS=$(ssh ${USER}@das echo "I am waiting.")
-            echo $SSH_STATUS >> /var/log/run.log
-        done
-
-        # Busy waiting for Domain Administration Server to be available
-        DAS_STATUS=$(ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
-        --passwordfile=${PSWD_FILE} list-domains | head -n 1)
-
-        while [ "${DAS_STATUS}" = "domain1 not running" ]
-        do
-            sleep 20
-            DAS_STATUS=$(ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
-            --passwordfile=${PSWD_FILE} list-domains | head -n 1)
-        done
-
-        # Get node own LAN IP
-        NODEHOST_ENTRY=$(cat /etc/hosts | grep "${HOSTNAME}")
-        export HOST_IP=$(echo "${NODEHOST_ENTRY}" | cut -f1 -s)
-        if [ -z "${HOST_IP}" ]
-            then export HOST_IP=$(echo "${NODEHOST_ENTRY}" | cut -d' ' -f1)
-        fi
+        ~/glassfish4/bin/asadmin --user=admin stop-domain        
 
         # Update existing CONFIG node to a SSH one
         ssh ${USER}@das ~/glassfish4/glassfish/bin/asadmin --user=admin \
         --passwordfile=${PSWD_FILE} --interactive=false update-node-ssh \
         --sshuser "${USER}" --sshkeyfile ~/.ssh/id_rsa \
-        --nodehost "${HOST_IP}" --installdir "${HOME_DIR}"/glassfish4 "${HOSTNAME}"
+        --nodehost "${HOSTNAME}" --installdir "${HOME_DIR}"/glassfish4 "${HOSTNAME}"
 
         # Start instance
         ssh ${USER}@das ~/glassfish4/glassfish/lib/nadmin --user=admin \
         --passwordfile=${PSWD_FILE} --interactive=false start-instance cluster1-"${HOSTNAME}"
 
-        while [[ true ]]; do
-            sleep 1
-        done
     fi
 }
 
