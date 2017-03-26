@@ -2,18 +2,21 @@
 
 start() {
     
-    ~/glassfish4/bin/asadmin start-domain
-
-    # Create Cluster
+    #DAS
     if [ -n "${DAS}" ]
-    then
+    then    
     	echo -e 'y\n'|ssh-keygen -t rsa -b 4096 -q -N '' -f ~/.ssh/id_rsa
     	cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
 
+        #start domain
+        ~/glassfish4/bin/asadmin start-domain
+        
+        #create cluster 
         ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false create-cluster cluster1
-        ~/glassfish4/bin/asadmin --user=admin stop-domain
-        ~/glassfish4/bin/asadmin start-domain -v
+        
     fi
+    
+    # Worker
     if [ -n "${DAS_PORT_4848_TCP_ADDR}" ]
     then
         # Getting all keys from Domain Administration Server SSH
@@ -35,6 +38,9 @@ start() {
             echo $DAS_STATUS >> /var/log/run.log
             [ "${DAS_STATUS}" = "domain1 not running" ] && { sleep 20; } || { break; }
         done
+                
+        #start domain
+        ~/glassfish4/bin/asadmin start-domain
         
         # Create cluster node
         ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false \
