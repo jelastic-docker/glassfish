@@ -8,11 +8,11 @@ start() {
     	echo -e 'y\n'|ssh-keygen -t rsa -b 4096 -q -N '' -f ~/.ssh/id_rsa
     	cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys
 
-        #update JMX default host
-        ~/glassfish4/bin/asadmin set --user=admin --passwordfile=${PSWD_FILE} server-config.jms-service.jms-host.default_JMS_host.host="${HOSTNAME}"
-        
         #start domain
         ~/glassfish4/bin/asadmin start-domain
+
+        #update JMX default host
+        ~/glassfish4/bin/asadmin set --user=admin --passwordfile=${PSWD_FILE} server-config.jms-service.jms-host.default_JMS_host.host="${HOSTNAME}"
         
         #create cluster 
         ~/glassfish4/bin/asadmin --user=admin --passwordfile=${PSWD_FILE} --interactive=false create-cluster cluster1
